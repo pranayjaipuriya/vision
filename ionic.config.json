@@ -1,0 +1,7 @@
+{
+  "name": "vision",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
