@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TransformationService } from '../services/transformation.service';
 
 @Component({
   selector: 'app-home',
@@ -13,23 +14,25 @@ export class HomePage {
   channelList: ChannelData[] = [];
   newMessage = '';
 
+  constructor(private transformationService: TransformationService) {}
+
   async joinChat() {
     const { username } = this;
 
-      this.currentUser = {
-          id: username,
-          name: username,
-        };
-      
-      let channel = {
-        id: 1,
-        name: 'Hackathon 2021',
-        messages: []
-      };
-      this.channel = channel;
-      this.messages = channel.messages;
-      this.channelList.push(this.channel);
-}
+    this.currentUser = {
+      id: username,
+      name: username,
+    };
+
+    let channel = {
+      id: 1,
+      name: 'Hackathon 2021',
+      messages: [],
+    };
+    this.channel = channel;
+    this.messages = channel.messages;
+    this.channelList.push(this.channel);
+  }
 
   sendMessage() {
     if (this.newMessage.trim() === '') {
@@ -39,14 +42,26 @@ export class HomePage {
     let message = {
       text: this.newMessage,
       user: this.currentUser,
-      timestamp: new Date()
-    }
+      timestamp: new Date(),
+    };
     this.messages.push(message);
     this.newMessage = null;
   }
 
+  say() {
+    console.log('Inside say function');
+    this.transformationService
+      .text2speech(this.newMessage)
+      .subscribe((result) => {
+        console.log('Hello');
+        console.log(result);
+        let audio = new Audio();
+        audio.src = URL.createObjectURL(result);
+        audio.load();
+        audio.play();
+      });
+  }
 }
-
 
 interface ChannelData {
   id: number;
