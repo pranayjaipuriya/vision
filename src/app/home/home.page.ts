@@ -49,12 +49,9 @@ export class HomePage {
   }
 
   say() {
-    console.log('Inside say function');
     this.transformationService
       .text2speech(this.newMessage)
       .subscribe((result) => {
-        console.log('Hello');
-        console.log(result);
         let audio = new Audio();
         audio.src = URL.createObjectURL(result);
         audio.load();
