@@ -38,7 +38,7 @@ export class TransformationService {
     );
   }
 
-  saveConversation(conversation: Blob) {
+  saveConversation(objectName: string, conversation: Blob) {
     let blob: any = conversation;
     blob.lastModifiedDate = new Date();
     blob.name = 'conversation.txt';
@@ -46,6 +46,7 @@ export class TransformationService {
 
     let formData: FormData = new FormData();
     formData.append('uploadFile', file, file.name);
+    formData.append('name', objectName);
     let headers = new HttpHeaders();
 
     headers.append('Content-Type', 'multipart/form-data');
@@ -60,11 +61,18 @@ export class TransformationService {
   }
 
   getConversations(name: string) {
-    return this.http.post(
-      'https://asia-south1-hack-vision.cloudfunctions.net/export-conversations',
-      {
-        name: name,
-      }
-    );
+    if (name) {
+      return this.http.post(
+        'https://asia-south1-hack-vision.cloudfunctions.net/export-conversations',
+        {
+          name: name,
+        }
+      );
+    } else {
+      return this.http.post(
+        'https://asia-south1-hack-vision.cloudfunctions.net/export-conversations',
+        {}
+      );
+    }
   }
 }

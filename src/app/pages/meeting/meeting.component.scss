@@ -238,12 +238,26 @@ img {
   font-size: 17px;
   height: 33px;
   position: absolute;
-  right: 40px;
+  right: 80px;
   top: 11px;
   width: 33px;
 }
 
 .msg_rec_btn {
+  background: #05728f none repeat scroll 0 0;
+  border: medium none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  height: 33px;
+  position: absolute;
+  right: 40px;
+  top: 11px;
+  width: 33px;
+}
+
+.msg_save_btn {
   background: #05728f none repeat scroll 0 0;
   border: medium none;
   border-radius: 50%;

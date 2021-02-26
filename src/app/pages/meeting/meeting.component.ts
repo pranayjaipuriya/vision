@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GlobalConstants } from 'src/global';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as RecordRTC from 'recordrtc';
-
+import { ToastController } from '@ionic/angular';
 import { TransformationService } from '../../services/transformation.service';
 
 @Component({
@@ -30,7 +30,8 @@ export class MeetingComponent implements OnInit {
 
   constructor(
     private transformationService: TransformationService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    public toastController: ToastController
   ) {}
 
   ngOnInit() {
@@ -119,7 +120,39 @@ export class MeetingComponent implements OnInit {
     console.log(error);
   }
 
+  saveConversation() {
+    // save the text
+
+    const date = new Date();
+    const dformat =
+      [date.getMonth() + 1, date.getDate(), date.getFullYear()].join('-') +
+      '_' +
+      [date.getHours(), date.getMinutes(), date.getSeconds()].join(':');
+
+    this.transformationService
+      .saveConversation(
+        this.userEmail + '_' + this.meetingName + '_' + dformat,
+        new Blob(
+          this.messages.map((m) => m.text),
+          {
+            type: 'text/plain',
+          }
+        )
+      )
+      .subscribe(
+        (result) => {
+          console.log(result);
+          this.presentToast('Conversation saved successfully');
+        },
+        (error) => {
+          console.log(error);
+          this.presentToast('Error occurred while saving conversation');
+        }
+      );
+  }
+
   say() {
+    // say the text
     this.transformationService
       .text2speech(this.newMessage)
       .subscribe((result) => {
@@ -128,29 +161,24 @@ export class MeetingComponent implements OnInit {
         audio.load();
         audio.play();
       });
-    this.transformationService
-      .saveConversation(
-        new Blob([this.newMessage], {
-          type: 'text/plain',
-        })
-      )
-      .subscribe(
-        (result) => {
-          console.log(result);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
   }
 
   startRecording() {
     this.isRecordingActive = true;
     this.initiateRecording();
   }
+
   pauseRecording() {
     this.isRecordingActive = false;
     this.stopRecording();
+  }
+
+  async presentToast(text: string) {
+    const toast = await this.toastController.create({
+      message: text,
+      duration: 2000,
+    });
+    toast.present();
   }
 }
 

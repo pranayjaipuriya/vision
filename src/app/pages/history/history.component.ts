@@ -26,6 +26,15 @@ export class HistoryComponent implements OnInit {
   }
 
   fetchConversations() {
+    this.transformationService.getConversations(undefined).subscribe(
+      (result) => {
+        console.log(result);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
     this.currentUser = {
       id: this.userEmail,
       name: this.userEmail,
@@ -34,19 +43,23 @@ export class HistoryComponent implements OnInit {
     let channel = {
       id: 1,
       name: 'Hackathon 2019',
-      messages: [ {
-        text: 'Hi Everyone !',
-        user: this.currentUser,
-        timestamp: new Date()
-      }, {
-        text: 'How is it going ?',
-        user: this.currentUser,
-        timestamp: new Date()
-      }, {
-        text: 'having fun, yeah ?',
-        user: this.currentUser,
-        timestamp: new Date()
-      }]
+      messages: [
+        {
+          text: 'Hi Everyone !',
+          user: this.currentUser,
+          timestamp: new Date(),
+        },
+        {
+          text: 'How is it going ?',
+          user: this.currentUser,
+          timestamp: new Date(),
+        },
+        {
+          text: 'having fun, yeah ?',
+          user: this.currentUser,
+          timestamp: new Date(),
+        },
+      ],
     };
 
     this.channelList.push(channel);
@@ -54,19 +67,23 @@ export class HistoryComponent implements OnInit {
     channel = {
       id: 1,
       name: 'Hackathon 2020',
-      messages: [ {
-        text: 'Hi Everyone !',
-        user: this.currentUser,
-        timestamp: new Date()
-      }, {
-        text: 'How is it going ?',
-        user: this.currentUser,
-        timestamp: new Date()
-      }, {
-        text: 'having fun, yeah ?',
-        user: this.currentUser,
-        timestamp: new Date()
-      }]
+      messages: [
+        {
+          text: 'Hi Everyone !',
+          user: this.currentUser,
+          timestamp: new Date(),
+        },
+        {
+          text: 'How is it going ?',
+          user: this.currentUser,
+          timestamp: new Date(),
+        },
+        {
+          text: 'having fun, yeah ?',
+          user: this.currentUser,
+          timestamp: new Date(),
+        },
+      ],
     };
     this.channel = channel;
     this.messages = channel.messages;
