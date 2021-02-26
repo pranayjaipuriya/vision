@@ -1,22 +1,34 @@
-<!-- <ion-header [translucent]="true">
+<ion-header [translucent]="false">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title size="large" class="ion-text-center">Subtitles</ion-title>
   </ion-toolbar>
-</ion-header> -->
+</ion-header>
+<ion-header [translucent]="false">
+  <ion-toolbar>
+    <ion-tabs #tabs (ionTabsDidChange)="setCurrentTab()">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="meeting">
+          <ion-icon name="keypad-outline"></ion-icon>
+          <ion-label>Meeting</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="history">
+          <ion-icon name="chatbubbles-outline"></ion-icon>
+          <ion-label>History</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="about">
+          <ion-icon name="information-circle-outline"></ion-icon>
+          <ion-label>About</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content [fullscreen]="true">
-  <!--ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header-->
+  <app-about *ngIf="selectedTab == 'about'"></app-about>
+</ion-content>
 
-  <!--div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div-->
+<ion-content [fullscreen]="true">
   <link
     rel="stylesheet"
     href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -128,9 +140,4 @@
       </div>
     </div>
   </div>
-</ion-content>
-
-<ion-content>
-  <div id="firebaseui-auth-container"></div>
-  <div id="loader">Loading...</div>
 </ion-content>

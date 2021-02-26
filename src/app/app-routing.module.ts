@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AboutComponent } from './pages/about/about.component';
+import { HistoryComponent } from './pages/history/history.component';
+import { LoginComponent } from './pages/login/login.component';
+import { MeetingComponent } from './pages/meeting/meeting.component';
 
 const routes: Routes = [
   {
@@ -9,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {
@@ -18,6 +22,10 @@ const routes: Routes = [
       import('./pages/conversation/conversation.module').then(
         (m) => m.ConversationPageModule
       ),
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
 ];
 
