@@ -5,6 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
 import { HttpClientModule } from '@angular/common/http';
 import { HomePageRoutingModule } from './home-routing.module';
+import { AboutComponent } from '../pages/about/about.component';
+import { MeetingComponent } from '../pages/meeting/meeting.component';
+import { HistoryComponent } from '../pages/history/history.component';
 
 @NgModule({
   imports: [
@@ -14,6 +17,6 @@ import { HomePageRoutingModule } from './home-routing.module';
     HomePageRoutingModule,
     HttpClientModule,
   ],
-  declarations: [HomePage],
+  declarations: [HomePage, AboutComponent, MeetingComponent, HistoryComponent],
 })
 export class HomePageModule {}
