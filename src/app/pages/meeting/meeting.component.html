@@ -104,6 +104,36 @@
                     <button class="msg_send_btn" type="submit" (click)="say()">
                       <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
                     </button>
+
+                    <button
+                      (click)="initiateRecording()"
+                      class="btn btn-primary"
+                      *ngIf="!recording"
+                      style="
+                        cursor: pointer;
+                        background-color: green;
+                        color: white;
+                        font-size: 40px;
+                      "
+                    >
+                      Start Recording
+                    </button>
+                    <button
+                      (click)="stopRecording()"
+                      class="btn btn-danger"
+                      *ngIf="recording"
+                      style="
+                        cursor: pointer;
+                        background-color: red;
+                        color: white;
+                        font-size: 40px;
+                      "
+                    >
+                      Stop Recording
+                    </button>
+                    <audio controls="" *ngIf="url">
+                      <source [src]="sanitize(url)" type="audio/wav" />
+                    </audio>
                   </form>
                 </div>
               </div>

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalConstants } from 'src/global';
+import { DomSanitizer } from '@angular/platform-browser';
+import * as RecordRTC from 'recordrtc';
+
 import { TransformationService } from '../../services/transformation.service';
 
 @Component({
@@ -15,12 +18,26 @@ export class MeetingComponent implements OnInit {
   channelList: ChannelData[] = [];
   newMessage = '';
 
+  //Lets declare Record OBJ
+  record: RecordRTC.StereoAudioRecorder;
+  //Will use this flag for toggeling recording
+  recording = false;
+  //URL of Blob
+  url: string;
+
   userEmail: string = '';
 
-  constructor(private transformationService: TransformationService) {}
+  constructor(
+    private transformationService: TransformationService,
+    private domSanitizer: DomSanitizer
+  ) {}
 
   ngOnInit() {
     this.userEmail = GlobalConstants.userEmail;
+  }
+
+  sanitize(url: string) {
+    return this.domSanitizer.bypassSecurityTrustUrl(url);
   }
 
   async joinChat() {
@@ -55,6 +72,52 @@ export class MeetingComponent implements OnInit {
     this.newMessage = null;
   }
 
+  initiateRecording() {
+    this.recording = true;
+    let mediaConstraints = {
+      video: false,
+      audio: true,
+    };
+    navigator.mediaDevices
+      .getUserMedia(mediaConstraints)
+      .then(this.successCallback.bind(this), this.errorCallback.bind(this));
+  }
+
+  successCallback(stream) {
+    var options = {
+      mimeType: 'audio/wav',
+      numberOfAudioChannels: 1,
+      sampleRate: 48000,
+    };
+    //Start Actuall Recording
+    var StereoAudioRecorder = RecordRTC.StereoAudioRecorder;
+    this.record = new StereoAudioRecorder(stream, options);
+    this.record.record();
+  }
+
+  stopRecording() {
+    this.recording = false;
+    this.record.stop(this.processRecording.bind(this));
+  }
+
+  processRecording(blob) {
+    this.url = URL.createObjectURL(blob);
+    console.log('blob', blob);
+    console.log('url', this.url);
+    this.transformationService.speech2text(blob).subscribe(
+      (result) => {
+        console.log(result);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  errorCallback(error) {
+    console.log(error);
+  }
+
   say() {
     this.transformationService
       .text2speech(this.newMessage)
@@ -64,6 +127,20 @@ export class MeetingComponent implements OnInit {
         audio.load();
         audio.play();
       });
+    this.transformationService
+      .saveConversation(
+        new Blob([this.newMessage], {
+          type: 'text/plain',
+        })
+      )
+      .subscribe(
+        (result) => {
+          console.log(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 }
 
