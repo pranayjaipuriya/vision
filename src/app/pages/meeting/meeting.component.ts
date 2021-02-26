@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalConstants } from 'src/global';
 import { TransformationService } from '../../services/transformation.service';
 
 @Component({
@@ -7,28 +8,32 @@ import { TransformationService } from '../../services/transformation.service';
   styleUrls: ['./meeting.component.scss'],
 })
 export class MeetingComponent implements OnInit {
-  username = '';
+  meetingName = '';
   currentUser: User;
   messages: Message[] = [];
   channel: ChannelData;
   channelList: ChannelData[] = [];
   newMessage = '';
 
+  userEmail: string = '';
+
   constructor(private transformationService: TransformationService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userEmail = GlobalConstants.userEmail;
+  }
 
   async joinChat() {
-    const { username } = this;
+    const { meetingName } = this;
 
     this.currentUser = {
-      id: username,
-      name: username,
+      id: meetingName,
+      name: meetingName,
     };
 
     let channel = {
       id: 1,
-      name: 'Hackathon 2021',
+      name: meetingName,
       messages: [],
     };
     this.channel = channel;

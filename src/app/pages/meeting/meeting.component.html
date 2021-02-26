@@ -14,22 +14,23 @@
       />
 
       <div class="content" role="main">
-        <!-- <div *ngIf="!channel" class="login">
-          <h2 class="title">Login to Chat</h2>
+        <div *ngIf="!channel" class="login">
+          <h1>{{ userEmail }}</h1>
+          <h2 class="title">Enter Meeting Name</h2>
           <form id="login-form" (ngSubmit)="joinChat()">
             <div class="form-group">
               <input
                 type="text"
                 class="form-control"
                 id="text"
-                name="username"
-                placeholder="Username"
-                [(ngModel)]="username"
+                name="meetingName"
+                placeholder="Meeting name"
+                [(ngModel)]="meetingName"
               />
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
-        </div> -->
+        </div>
 
         <div *ngIf="channel" class="container">
           <div class="messaging">

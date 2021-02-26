@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import firebase from 'firebase';
 import * as firebaseui from 'firebaseui';
+import { GlobalConstants } from 'src/global';
 
 @Component({
   selector: 'app-login',
@@ -9,6 +11,8 @@ import * as firebaseui from 'firebaseui';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  userObject: any;
+
   // firebase ui login configuration
   uiConfig = {
     callbacks: {
@@ -16,7 +20,6 @@ export class LoginComponent implements OnInit {
         // User successfully signed in.
         // Return type determines whether we continue the redirect automatically
         // or whether we leave that to developer to handle.
-        console.log('Success');
         return true;
       },
       uiShown: function () {
@@ -43,7 +46,7 @@ export class LoginComponent implements OnInit {
     // privacyPolicyUrl: '<your-privacy-policy-url>'
   };
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     var config = {
@@ -61,18 +64,10 @@ export class LoginComponent implements OnInit {
 
     ui.start('#firebaseui-auth-container', this.uiConfig);
 
-    // firebase
-    //   .auth()
-    //   .signInWithEmailAndPassword('rhadbe@gmail.com', 'admin123')
-    //   .then((userCredential) => {
-    //     // Signed in
-    //     var user = userCredential.user;
-    //     // ...
-    //   })
-    //   .catch((error) => {
-    //     var errorCode = error.code;
-    //     var errorMessage = error.message;
-    //   });
+    // firebase.auth().onAuthStateChanged((user) => {
+    //   GlobalConstants.user = user;
+    //   this.router.navigate(['home']);
+    // });
 
     // firebase
     //   .auth()
@@ -81,12 +76,13 @@ export class LoginComponent implements OnInit {
     //     // Signed in
     //     var user = userCredential.user;
     //     console.log(user);
+    //     this.userObject = user;
+    //     GlobalConstants.user = this.userObject;
     //     // ...
     //   })
     //   .catch((error) => {
     //     var errorCode = error.code;
     //     var errorMessage = error.message;
-    //     console.log(error);
     //   });
     // var email = window.prompt('Please provide your email');
 
@@ -149,4 +145,8 @@ export class LoginComponent implements OnInit {
     //     // ...
     //   });
   }
+
+  // successLoginCallback(event) {
+  //   console.log('Hello there');
+  // }
 }
