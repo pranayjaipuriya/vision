@@ -26,6 +26,7 @@ export class MeetingComponent implements OnInit {
   url: string;
 
   userEmail: string = '';
+  isRecordingActive = false;
 
   constructor(
     private transformationService: TransformationService,
@@ -44,8 +45,8 @@ export class MeetingComponent implements OnInit {
     const { meetingName } = this;
 
     this.currentUser = {
-      id: meetingName,
-      name: meetingName,
+      id: this.userEmail,
+      name: this.userEmail,
     };
 
     let channel = {
@@ -142,21 +143,30 @@ export class MeetingComponent implements OnInit {
         }
       );
   }
+
+  startRecording() {
+    this.isRecordingActive = true;
+    this.initiateRecording();
+  }
+  pauseRecording() {
+    this.isRecordingActive = false;
+    this.stopRecording();
+  }
 }
 
-interface ChannelData {
+export interface ChannelData {
   id: number;
   name: string;
   messages: Message[];
 }
 
-interface Message {
+export interface Message {
   text: string;
   user: User;
   timestamp: Date;
 }
 
-interface User {
+export interface User {
   id: string;
   name: string;
 }

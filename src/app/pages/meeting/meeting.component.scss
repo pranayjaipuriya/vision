@@ -190,8 +190,9 @@ img {
 
 .mesgs {
   float: left;
-  padding: 30px 15px 0 25px;
-  width: 60%;
+  // padding: 30px 15px 0 25px;
+  // width: 60%;
+  width: 100%;
 }
 
 .sent_msg p {
@@ -237,6 +238,20 @@ img {
   font-size: 17px;
   height: 33px;
   position: absolute;
+  right: 40px;
+  top: 11px;
+  width: 33px;
+}
+
+.msg_rec_btn {
+  background: #05728f none repeat scroll 0 0;
+  border: medium none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  height: 33px;
+  position: absolute;
   right: 0;
   top: 11px;
   width: 33px;
@@ -247,7 +262,8 @@ img {
 }
 
 .msg_history {
-  height: 516px;
+  // height: 516px;
+  height: 70vh;
   overflow-y: auto;
 }
 

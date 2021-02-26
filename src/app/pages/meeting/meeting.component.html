@@ -33,110 +33,72 @@
         </div>
 
         <div *ngIf="channel" class="container">
-          <div class="messaging">
-            <div class="inbox_msg">
-              <div class="inbox_people">
-                <div class="headind_srch">
-                  <div class="channel_heading">
-                    <h4>Channels</h4>
-                  </div>
-                </div>
-                <div class="inbox_chat">
-                  <div class="channels" *ngFor="let channel of channelList">
-                    <div class="chat_list">
-                      <div class="chat_people">
-                        <div class="chat_ib">
-                          <h5>{{ channel.name }}</h5>
-                          <p *ngIf="channel.messages.length > 0">
-                            {{
-                              channel.messages[channel.messages.length - 1].text
-                            }}
-                          </p>
-                        </div>
+          <div class="mesgs">
+            <div class="msg_history">
+              <li class="message" *ngFor="let message of messages">
+                <div
+                  *ngIf="
+                    message.user.id !== currentUser.id;
+                    then incoming_msg;
+                    else outgoing_msg
+                  "
+                ></div>
+                <ng-template #incoming_msg>
+                  <div class="incoming_msg">
+                    <div class="incoming_msg_img">
+                      <img
+                        src="https://i.imgur.com/k2PZLZa.png"
+                        alt="User avatar"
+                      />
+                    </div>
+                    <div class="received_msg">
+                      <div class="received_withd_msg">
+                        <p>{{ message.text }}</p>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="mesgs">
-                <div class="msg_history">
-                  <li class="message" *ngFor="let message of messages">
-                    <div
-                      *ngIf="
-                        message.user.id !== currentUser.id;
-                        then incoming_msg;
-                        else outgoing_msg
-                      "
-                    ></div>
-                    <ng-template #incoming_msg>
-                      <div class="incoming_msg">
-                        <div class="incoming_msg_img">
-                          <img
-                            src="https://i.imgur.com/k2PZLZa.png"
-                            alt="User avatar"
-                          />
-                        </div>
-                        <div class="received_msg">
-                          <div class="received_withd_msg">
-                            <p>{{ message.text }}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </ng-template>
-                    <ng-template #outgoing_msg>
-                      <div class="outgoing_msg">
-                        <div class="sent_msg">
-                          <p>{{ message.text }}</p>
-                        </div>
-                      </div>
-                    </ng-template>
-                  </li>
-                </div>
-                <div class="type_msg">
-                  <form class="input_msg_write" (ngSubmit)="sendMessage()">
-                    <input
-                      type="text"
-                      class="write_msg"
-                      placeholder="Type a message"
-                      name="newMessage"
-                      [(ngModel)]="newMessage"
-                    />
-                    <button class="msg_send_btn" type="submit" (click)="say()">
-                      <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
-                    </button>
-
-                    <button
-                      (click)="initiateRecording()"
-                      class="btn btn-primary"
-                      *ngIf="!recording"
-                      style="
-                        cursor: pointer;
-                        background-color: green;
-                        color: white;
-                        font-size: 40px;
-                      "
-                    >
-                      Start Recording
-                    </button>
-                    <button
-                      (click)="stopRecording()"
-                      class="btn btn-danger"
-                      *ngIf="recording"
-                      style="
-                        cursor: pointer;
-                        background-color: red;
-                        color: white;
-                        font-size: 40px;
-                      "
-                    >
-                      Stop Recording
-                    </button>
-                    <audio controls="" *ngIf="url">
-                      <source [src]="sanitize(url)" type="audio/wav" />
-                    </audio>
-                  </form>
-                </div>
-              </div>
+                </ng-template>
+                <ng-template #outgoing_msg>
+                  <div class="outgoing_msg">
+                    <div class="sent_msg">
+                      <p>{{ message.text }}</p>
+                    </div>
+                  </div>
+                </ng-template>
+              </li>
+            </div>
+            <div class="type_msg">
+              <form class="input_msg_write" (ngSubmit)="sendMessage()">
+                <input
+                  type="text"
+                  class="write_msg"
+                  placeholder="Type a message"
+                  name="newMessage"
+                  [(ngModel)]="newMessage"
+                />
+                <button class="msg_send_btn" type="submit" (click)="say()">
+                  <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                </button>
+                <button
+                  *ngIf="!isRecordingActive"
+                  class="msg_rec_btn"
+                  type="button"
+                  (click)="startRecording()"
+                >
+                  <i class="fa fa-microphone" aria-hidden="true"></i>
+                </button>
+                <button
+                  *ngIf="isRecordingActive"
+                  class="msg_rec_btn"
+                  type="button"
+                  (click)="pauseRecording()"
+                >
+                  <i class="fa fa-microphone-slash" aria-hidden="true"></i>
+                </button>
+                <audio controls="" *ngIf="url" style="display: none">
+                  <source [src]="sanitize(url)" type="audio/wav" />
+                </audio>
+              </form>
             </div>
           </div>
         </div>
