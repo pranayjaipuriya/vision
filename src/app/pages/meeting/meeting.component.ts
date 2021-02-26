@@ -107,6 +107,22 @@ export class MeetingComponent implements OnInit {
     console.log('url', this.url);
     this.transformationService.speech2text(blob).subscribe(
       (result) => {
+        if(result != null && result !== undefined){
+          if(result['transcript']) {
+           let testUser = {
+              id: 'test',
+              name: 'test'
+            };
+            let transcripts = result['transcript'];
+            transcripts.forEach(element => {
+              this.messages.push({
+                text: element,
+                user: testUser,
+                timestamp: new Date()
+              });
+            });
+          } 
+        }  
         console.log(result);
       },
       (error) => {
